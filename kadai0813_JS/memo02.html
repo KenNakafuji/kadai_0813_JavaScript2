@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>筋トレメモ</title>
+  <link rel="stylesheet" href="css/select.css">
+</head>
+
+<body>
+
+    
+  <main>
+
+    <div class="input">
+      <img src="images/select/bf3aff40aa0b2f8dd91873670ea837bb-1024x683.jpg" width="1400px" height="450px" alt="">
+      <h1 class="title">月間 筋トレメモ!</h1>
+      <h2 class="head_text">今月の筋トレの成果を記録セヨッ！！！</h2>
+
+      <!-- 記録の入力① -->
+
+      <p>部位はどこ？</p>
+      <select name="" id="select1"></select>
+
+      <p>メニュー名は？</p>
+      <select name="" id="select2"></select>
+
+      <p>重さは？</p>
+      <input type="text" id="input1">kg
+
+      <p>回数とセット数は？</p>
+      <input type="text" id="input2">回
+      <input type="text" id="input3">セット
+
+      <!-- 文章での振り返り -->
+
+      <p>筋トレ一言メモ</p>
+      <input type="text" id="input4">
+
+      <ul>
+        <li id="save" class="save">Save</li>
+        <li id="clear" class="clear">Clear</li>
+      </ul>
+
+      <a href="memo3.html">Top</a>
+    </div>
+
+  </main>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    // セレクト内容
+
+    const list01 = ['-', '脚', '腕', '背中', '胸'];
+
+    const array1 = [];
+
+    for (let i = 0; i < list01.length; i++) {
+      array1.push('<option>' + list01[i] + '</option>');
+    }
+
+    const list02 = ['レッグカール', 'レッグエクステンション', 'バーベルスクワット', 'ダンベルランジ', ];
+
+    const array2 = [];
+
+    for (let i = 0; i < list02.length; i++) {
+      array2.push('<option>' + list02[i] + '</option>');
+    }
+
+    const list03 = ['サイドレイズ', 'ダンベルカール', 'バーベルカール', 'リアレイズ', ];
+
+    const array3 = [];
+
+    for (let i = 0; i < list03.length; i++) {
+      array3.push('<option>' + list03[i] + '</option>');
+    }
+
+    const list04 = ['デットリフト', 'ベントオーバーロー', 'ラットプルダウン', 'チンニング', ];
+
+    const array4 = [];
+
+    for (let i = 0; i < list04.length; i++) {
+      array4.push('<option>' + list04[i] + '</option>');
+    }
+
+    const list05 = ['ベンチプレス', 'チェストプレス', 'ダンベルフライ', 'ダンベルプレス', ];
+
+    const array5 = [];
+
+    for (let i = 0; i < list05.length; i++) {
+      array5.push('<option>' + list05[i] + '</option>');
+    }
+
+    $('#select1').html(array1);
+
+    // クリックイベント（選択した時に何を選択したか取ってくる）
+    $("#select1").change(function () {
+      var parts = $(this).val();
+
+      //条件分岐・表示処理
+      if (parts === "脚") {
+        $('#select2').html(array2);
+
+      } else if (parts === "腕") {
+        $('#select2').html(array3);
+
+      } else if (parts === "背中") {
+        $('#select2').html(array4);
+
+      } else if (parts === "胸") {
+        $('#select2').html(array5);
+
+      }
+    });
+
+    //1.Save クリックイベント
+
+    $('#save').on('click', function () {
+      const data = {
+        select1: $('#select1').val(),
+        select2: $('#select2').val(),
+        Input1: $('#input1').val(),
+        Input2: $('#input2').val(),
+        Input3: $('#input3').val(),
+        Input4: $('#input4').val(),
+
+      };
+      const jsonData = JSON.stringify(data);
+      localStorage.setItem('memo', jsonData);
+    });
+
+    //2.clear クリックイベント
+
+    $('#clear').on('click', function () {
+      localStorage.removeItem('memo');
+      $('#select1').val("");
+      $('#select2').val("");
+      $('#input1').val("");
+      $('#input2').val("");
+      $('#input3').val("");
+      $('#input4').val("");
+
+    });
+
+    //3.ページ読み込み：保存データ取得表示
+
+    if (localStorage.getItem('memo')) {
+      const jsonText = localStorage.getItem('memo');
+      const text = JSON.parse(jsonText);
+
+      if (text.select1 === "脚") {
+        $('#select2').html(array2);
+
+      } else if (text.select1 === "腕") {
+        $('#select2').html(array3);
+
+      } else if (text.select1 === "背中") {
+        $('#select2').html(array4);
+
+      } else if (text.select1 === "胸") {
+        $('#select2').html(array5);
+      }
+
+      $('#select1').val(text.select1);
+      $('#select2').val(text.select2);
+      $('#input1').val(text.Input1);
+      $('#input2').val(text.Input2);
+      $('#input3').val(text.Input3);
+      $('#input4').val(text.Input4);
+
+      console.log(text);
+    }
+  </script>
+
+</body>
+
+</html>
